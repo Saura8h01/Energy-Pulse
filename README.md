@@ -1,318 +1,169 @@
-# \# ⚡ Energy Pulse
+# ⚡ Energy Pulse
 
-# \### Smart Energy Consumption Prediction System Using Machine Learning
+### Smart Energy Consumption Prediction & 3D Smart-Building Digital Twin
 
-# 
+Energy Pulse is a machine-learning project that estimates residential appliance energy consumption from environmental measurements and presents the project through an interactive Streamlit dashboard. The dashboard includes a holographic 15-floor building and a decorative smart-city environment to make the system easier to explore.
 
-# Energy Pulse is a machine learning-based web application that estimates household appliance energy consumption using environmental measurements such as temperature, humidity, wind speed and atmospheric pressure.
+> **Important:** The trained model uses the UCI Appliances Energy Prediction residential dataset. The 15-floor building, surrounding buildings, roads, cars, trees, and floor-level demonstration values are visual simulations. They are not connected to real campus sensors, smart meters, or live city data.
 
-# 
+---
 
-# \## 📌 Project Overview
+## Dashboard Showcase
 
-# 
+The combined project showcase below presents the dashboard, 3D smart-city environment, energy prediction interface, and model analytics.
 
-# The objective of this project is to demonstrate how machine learning can be used to estimate energy consumption based on environmental conditions.
+![Energy Pulse project showcase](screenshots/project_showcase.png)
 
-# 
+---
 
-# The application uses a trained regression model and an interactive Streamlit dashboard to generate predictions.
+## Features
 
-# 
+- **Energy prediction:** Estimate appliance energy consumption for the supplied observation using the saved model.
+- **Interactive 15-floor building:** Explore a 3D holographic building and inspect individual floors.
+- **Smart-city environment:** Decorative neighbouring buildings, roads, lane markings, crosswalks, sidewalks, streetlights, trees, and vehicles.
+- **Room-oriented inputs:** Present environmental variables with room labels while retaining the original feature keys expected by the trained model.
+- **Model analytics:** Inspect the selected model and its input features and supported value ranges.
+- **Dark dashboard interface:** High-contrast styling and a consistent visual theme.
 
-# \## ✨ Key Features
+## Machine Learning
 
-# 
+The project is a supervised regression task.
 
-# \- Energy consumption prediction.
+- **Target:** `Appliances` — appliance energy consumption in watt-hours (Wh) for the dataset observation interval.
+- **Dataset:** UCI Appliances Energy Prediction.
+- **Input:** 25 selected environmental and building-measurement features.
+- **Saved model:** Loaded from `energy_pulse_model.pkl`.
+- **Algorithms explored:** Linear Regression and Random Forest Regression.
 
-# \- 25 environmental input features.
+The application uses the model stored in the repository. It does not retrain the model when the dashboard starts.
 
-# \- Linear Regression model.
+### Prediction interpretation
 
-# \- Random Forest Regression model comparison during training.
+The application estimates energy consumption for the input observation. It is **not** a future-time energy-demand forecast.
 
-# \- Interactive Streamlit dashboard.
+## Dataset
 
-# \- Model information and input feature analysis.
+The UCI Appliances Energy Prediction dataset contains measurements from a residential building:
 
-# 
+- 19,735 observations.
+- 29 original columns.
+- Target variable: `Appliances`.
+- 25 selected input features used by this project.
 
-# \## 🧠 Machine Learning Algorithms
+The dataset is residential, not campus-wide or floor-level sensor data. Room/floor labels in the dashboard are a presentation layer for the existing model inputs; they do not turn the original dataset into real floor measurements.
 
-# 
+## Technology Stack
 
-# \*\*1. Linear Regression\*\*
+| Technology | Purpose |
+|---|---|
+| Python | Application and model integration |
+| Streamlit | Interactive web dashboard |
+| scikit-learn | Machine-learning algorithms |
+| Pandas | Input data handling |
+| NumPy | Numerical operations |
+| Joblib | Loading the saved model |
+| Plotly | Interactive charts, where used |
+| Three.js | 3D building and city visualization |
 
-# 
+## Project Structure
 
-# A supervised machine learning algorithm used to predict continuous numerical values.
+```text
+Energy-Pulse/
+├── app.py
+├── energy_pulse_model.pkl
+├── requirements.txt
+├── README.md
+├── .gitignore
+├── docs/
+│   ├── architecture.md
+│   ├── machine_learning.md
+│   └── limitations.md
+└── screenshots/
+    ├── overview.png
+    ├── smart_city.png
+    ├── energy_prediction.png
+    └── model_analytics.png
+```
 
-# 
+The `docs/` and `screenshots/` folders can be added as project documentation and screenshots are prepared.
 
-# \*\*2. Random Forest Regression\*\*
+## Installation (Windows PowerShell)
 
-# 
+### 1. Clone the repository
 
-# An ensemble learning algorithm that combines multiple decision trees to generate predictions.
+```powershell
+git clone https://github.com/Saura8h01/Energy-Pulse.git
+cd Energy-Pulse
+```
 
-# 
+### 2. Create and activate a virtual environment
 
-# \## 📊 Dataset
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-# 
+If PowerShell blocks activation, use:
 
-# \*\*UCI Appliances Energy Prediction Dataset\*\*
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
 
-# 
+### 3. Install dependencies
 
-# \- 19,735 observations.
+```powershell
+python -m pip install -r requirements.txt
+```
 
-# \- 29 original columns.
+### 4. Run the application
 
-# \- Target variable: `Appliances`.
+```powershell
+python -m streamlit run app.py
+```
 
-# \- 25 selected input features.
+Open `http://localhost:8501` in your browser.
 
-# 
+## Model File
 
-# The dataset contains residential building measurements, including temperature, humidity and appliance energy consumption.
+The application expects this file in the project root:
 
-# 
+```text
+energy_pulse_model.pkl
+```
 
-# \## 🛠️ Technologies Used
+This is the saved model bundle used by the application. Keep the file in the same directory as `app.py`. Do not rename or replace it unless the application is deliberately updated to load a different model bundle.
 
-# 
+## Evaluation
 
-# | Technology | Purpose |
+The project can be evaluated using regression metrics such as:
 
-# |---|---|
+- **MAE:** Mean Absolute Error.
+- **RMSE:** Root Mean Squared Error.
+- **R²:** Coefficient of Determination.
 
-# | Python | Programming language |
+Only report numerical metric values when they have been verified against the actual model evaluation output. The dashboard does not invent or assume metric values if they are not present in the saved model bundle.
 
-# | Pandas | Data processing |
+## Limitations
 
-# | NumPy | Numerical operations |
+- The source dataset represents one residential building, not a university campus or a real 15-floor building.
+- The city and floor visualizations are simulated decorative elements.
+- No live IoT sensors, smart meters, HVAC controls, or traffic feeds are connected.
+- The prediction estimates the supplied observation; it does not forecast future energy demand.
+- Prediction reliability depends on the original dataset, feature preparation, and the range and quality of user inputs.
 
-# | Scikit-learn | Machine learning |
+## Future Improvements
 
-# | Joblib | Model saving and loading |
+- Integrate real smart-meter or IoT sensor data.
+- Add a separately trained time-series forecasting model for future demand.
+- Store and visualize historical prediction results.
+- Add model evaluation reports based on reproducible test data.
+- Deploy the dashboard for remote access.
 
-# | Streamlit | Web dashboard |
+## Author
 
-# | Google Colab | Model training |
+**Saura8h01**
 
-# 
+GitHub: [https://github.com/Saura8h01](https://github.com/Saura8h01)
 
-# \## ⚙️ Project Workflow
-
-# 
-
-# 1\. Dataset collection.
-
-# 2\. Data preprocessing.
-
-# 3\. Feature selection.
-
-# 4\. Model training.
-
-# 5\. Model evaluation.
-
-# 6\. Model saving using Joblib.
-
-# 7\. Energy prediction through Streamlit.
-
-# 
-
-# \## 📁 Project Structure
-
-# 
-
-# ```text
-
-# Energy-Pulse/
-
-# │
-
-# ├── app.py
-
-# ├── energy\_pulse\_model.pkl
-
-# ├── requirements.txt
-
-# ├── README.md
-
-# └── .gitignore
-
-# ```
-
-# 
-
-# \## 🚀 Installation and Setup
-
-# 
-
-# \### Prerequisites
-
-# 
-
-# \- Python 3.11
-
-# \- Git
-
-# \- Internet connection
-
-# 
-
-# \### 1. Clone the repository
-
-# 
-
-# ```bash
-
-# git clone https://github.com/Saura8h01/Energy-Pulse.git
-
-# ```
-
-# 
-
-# \### 2. Enter the project directory
-
-# 
-
-# ```bash
-
-# cd Energy-Pulse
-
-# ```
-
-# 
-
-# \### 3. Create a virtual environment
-
-# 
-
-# ```bash
-
-# python -m venv .venv
-
-# ```
-
-# 
-
-# \### 4. Activate the environment
-
-# 
-
-# Windows PowerShell:
-
-# 
-
-# ```powershell
-
-# .\\.venv\\Scripts\\Activate.ps1
-
-# ```
-
-# 
-
-# \### 5. Install dependencies
-
-# 
-
-# ```bash
-
-# python -m pip install -r requirements.txt
-
-# ```
-
-# 
-
-# \### 6. Run the application
-
-# 
-
-# ```bash
-
-# python -m streamlit run app.py
-
-# ```
-
-# 
-
-# Open the dashboard at:
-
-# 
-
-# `http://localhost:8501`
-
-# 
-
-# \## 📈 Model Evaluation
-
-# 
-
-# The project uses the following regression evaluation metrics:
-
-# 
-
-# \- \*\*MAE:\*\* Mean Absolute Error.
-
-# \- \*\*RMSE:\*\* Root Mean Squared Error.
-
-# \- \*\*R² Score:\*\* Coefficient of Determination.
-
-# 
-
-# Actual numerical evaluation results will be added after verification from the training results.
-
-# 
-
-# \## ⚠️ Project Limitations
-
-# 
-
-# \- The dataset represents a residential building, not a college campus.
-
-# \- The model estimates consumption for the supplied observation.
-
-# \- The current application does not forecast future energy demand.
-
-# \- Prediction quality depends on the dataset and input measurements.
-
-# 
-
-# \## 🔮 Future Improvements
-
-# 
-
-# \- Real-time smart meter integration.
-
-# \- Future energy-demand forecasting.
-
-# \- Historical consumption analysis.
-
-# \- Interactive energy usage reports.
-
-# \- Online application deployment.
-
-# 
-
-# \## 👨‍💻 Author
-
-# 
-
-# \*\*Saura8h01\*\*
-
-# 
-
-# GitHub: https://github.com/Saura8h01
-
-# 
-
-# \---
-
-# 
-
-# ⭐ If you find this project interesting, consider starring the repository!
-
+Repository: [https://github.com/Saura8h01/Energy-Pulse](https://github.com/Saura8h01/Energy-Pulse)
